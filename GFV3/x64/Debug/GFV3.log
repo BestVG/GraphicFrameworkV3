@@ -1,8 +1,2 @@
-﻿  GFV3.cpp
-  GFW.cpp
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(160,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(191,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(192,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  test.cpp
-  Generating Code...
-  GFV3.vcxproj -> C:\Users\richa\source\BigCodeProj\GFV3\x64\Debug\GFV3.exe
+﻿  test.cpp
+  GFV3.vcxproj -> C:\Users\ryand\source\repos\GraphicFrameworkV3\x64\Debug\GFV3.exe
