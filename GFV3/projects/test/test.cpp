@@ -48,7 +48,7 @@ void test_proj::test_proj::init()
 
 	bind_input(SDL_KEYDOWN, bind(&test_proj::MovePlayer, this));
 
-	string img_path = "C:\\Users\\richa\\source\\BigCodeProj\\GFV3\\GFV3\\projects\\test\\images\\DefaultProfilePicture.png";
+	string img_path = "./projects/test/images/DefaultProfilePicture.png";
 
 
 	img1 = CreateImg(img_path);
