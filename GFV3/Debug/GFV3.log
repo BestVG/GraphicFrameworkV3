@@ -1,0 +1,2 @@
+﻿  GFV3.cpp
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\SDL2_image-2.0.5\include\SDL_image.h(27,10): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
