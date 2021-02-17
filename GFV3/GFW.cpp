@@ -138,7 +138,7 @@ bool GFW::Collision::detectCollision(Points::Points a, Points::Points b)
 	bool check1 = checkshape_SATalg(a, b);
 	bool check2 = checkshape_SATalg(b, a);
 
-	return check1 || check2;
+	return check1 && check2;
 }
 
 //credit goes to javidx9
@@ -183,7 +183,7 @@ bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
 	for (int a = 0; a < p1.v.size(); a++)
 	{
 		int b = (a + 1) % p1.v.size();
-		FVector2D axisProj = { -(p1.v[b].y - p1.v[a].y), p1.v[b].x - p1.v[a].x };
+		FVector2D axisProj = { static_cast<float>(-(p1.v[b].y - p1.v[a].y)), static_cast<float>(p1.v[b].x - p1.v[a].x) };
 		float d = sqrtf(axisProj.x * axisProj.x + axisProj.y * axisProj.y);
 		axisProj = { axisProj.x / d, axisProj.y / d};
 
