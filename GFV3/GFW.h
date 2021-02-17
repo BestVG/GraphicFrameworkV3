@@ -21,7 +21,8 @@ namespace GFW {
 
 	namespace Collision {
 		bool detectCollision(Points::Points a, Points::Points b);
-		bool checkshape(Points::Points a, Points::Points b);
+		bool checkshape_Dalg(Points::Points a, Points::Points b);
+		bool checkshape_SATalg(Points::Points p1, Points::Points p2);
 		void DrawCollisionBounds(Points::Points bounds, SDL_Color color, SDL_Renderer* renderer);
 		Points::Points GetRectBounds(SDL_Rect rect);
 		namespace Ray {

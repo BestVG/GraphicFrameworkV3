@@ -135,18 +135,14 @@ GFW::Points::Points GFW::Collision::GetRectBounds(SDL_Rect rect)
 
 bool GFW::Collision::detectCollision(Points::Points a, Points::Points b)
 {
-	future<bool> check1 = async(checkshape, a, b);
-	future<bool> check2 = async(checkshape, b, a);
+	bool check1 = checkshape_SATalg(a, b);
+	bool check2 = checkshape_SATalg(b, a);
 
-	if (check1.get() || check2.get()) {
-		return true;
-	}
-
-	return false;
+	return check1 || check2;
 }
 
 //credit goes to javidx9
-bool GFW::Collision::checkshape(Points::Points p1, Points::Points p2)
+bool GFW::Collision::checkshape_Dalg(Points::Points p1, Points::Points p2)
 {
 	for (int p = 0; p < p1.v.size(); p++) {
 		Vector2D line_r1s = p1.midp;
@@ -172,6 +168,39 @@ bool GFW::Collision::checkshape(Points::Points p1, Points::Points p2)
 
 	}
 	return false;
+}
+
+//credit goes to javidx9
+bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
+{
+	for (int a = 0; a < p1.v.size(); a++)
+	{
+		int b = (a + 1) % p1.v.size();
+		Vector2D axisProj = { -(p1.v[b].y - p1.v[a].y), p1.v[b].x - p1.v[a].x };
+		float d = sqrtf(axisProj.x * axisProj.x + axisProj.y * axisProj.y);
+		axisProj = { int(axisProj.x / d), int(axisProj.y / d) };
+
+		float min_r1 = INFINITY, max_r1 = -INFINITY;
+		for (int p = 0; p < p1.v.size(); p++)
+		{
+			float q = (p1.v[p].x * axisProj.x + p1.v[p].y * axisProj.y);
+			min_r1 = min(min_r1, q);
+			max_r1 = max(max_r1, q);
+		}
+
+		float min_r2 = INFINITY, max_r2 = -INFINITY;
+		for (int p = 0; p < p2.v.size(); p++)
+		{
+			float q = (p2.v[p].x * axisProj.x + p2.v[p].y * axisProj.y);
+			min_r2 = min(min_r2, q);
+			max_r2 = max(max_r2, q);
+		}
+
+		if (!(max_r2 >= min_r1 && max_r1 >= min_r2)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 void GFW::Collision::DrawCollisionBounds(Points::Points bounds, SDL_Color color, SDL_Renderer* renderer)
