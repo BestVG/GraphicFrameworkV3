@@ -7,6 +7,10 @@ namespace GFW {
 
 
 	struct Vector2D { int x, y; };
+	struct FVector2D {
+		float x, y;
+		void convertVector2D(Vector2D vec) { x = float(vec.x); y = float(vec.y); };
+	};
 
 	namespace Points {
 		struct Points {

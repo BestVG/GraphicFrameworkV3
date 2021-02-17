@@ -1,11 +1,8 @@
-﻿  GFV3.cpp
-  GFW.cpp
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(156,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(180,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(186,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(194,12): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(220,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(221,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-  test.cpp
-  Generating Code...
+﻿  GFW.cpp
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(185,26): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(185,26): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(185,62): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(185,62): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(226,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(227,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   GFV3.vcxproj -> C:\Users\richa\source\BigCodeProj\GFV3\x64\Debug\GFV3.exe

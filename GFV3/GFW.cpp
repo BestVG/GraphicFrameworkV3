@@ -142,15 +142,21 @@ bool GFW::Collision::detectCollision(Points::Points a, Points::Points b)
 }
 
 //credit goes to javidx9
+//this algoritim still has same bugs
 bool GFW::Collision::checkshape_Dalg(Points::Points p1, Points::Points p2)
 {
 	for (int p = 0; p < p1.v.size(); p++) {
-		Vector2D line_r1s = p1.midp;
-		Vector2D line_r1e = p1.v[p];
+		FVector2D line_r1s;
+		FVector2D line_r1e;
+		line_r1s.convertVector2D(p1.midp);
+		line_r1e.convertVector2D(p1.v[p]);
 
 		for (int q = 0; q < p2.v.size(); q++) {
-			Vector2D line_r2s = p2.v[q];
-			Vector2D line_r2e = p2.v[(q + 1) % p2.v.size()];
+			FVector2D line_r2s;
+			FVector2D line_r2e;
+
+			line_r2s.convertVector2D(p2.v[q]);
+			line_r2e.convertVector2D(p2.v[(q + 1) % p2.v.size()]);
 
 
 			float h = (line_r2e.x - line_r2s.x) * (line_r1s.y - line_r1e.y) - (line_r1s.x - line_r1e.x) * (line_r2e.y - line_r2s.y);
@@ -171,14 +177,15 @@ bool GFW::Collision::checkshape_Dalg(Points::Points p1, Points::Points p2)
 }
 
 //credit goes to javidx9
+//use this it works
 bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
 {
 	for (int a = 0; a < p1.v.size(); a++)
 	{
 		int b = (a + 1) % p1.v.size();
-		Vector2D axisProj = { -(p1.v[b].y - p1.v[a].y), p1.v[b].x - p1.v[a].x };
+		FVector2D axisProj = { -(p1.v[b].y - p1.v[a].y), p1.v[b].x - p1.v[a].x };
 		float d = sqrtf(axisProj.x * axisProj.x + axisProj.y * axisProj.y);
-		axisProj = { int(axisProj.x / d), int(axisProj.y / d) };
+		axisProj = { axisProj.x / d, axisProj.y / d};
 
 		float min_r1 = INFINITY, max_r1 = -INFINITY;
 		for (int p = 0; p < p1.v.size(); p++)
