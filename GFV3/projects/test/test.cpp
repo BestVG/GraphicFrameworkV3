@@ -1,4 +1,4 @@
-#include "test.h"
+ #include "test.h"
 
 
 void test_proj::test_proj::MovePlayer()
@@ -23,11 +23,11 @@ void test_proj::test_proj::MovePlayer()
 		break;
 
 	case SDLK_q:
-		img1.angle += 5;
+		img1.angle -= 5;
 		break;
 
 	case SDLK_e:
-		img1.angle -= 5;
+		img1.angle += 5;
 		break;
 
 	default:
@@ -75,6 +75,7 @@ void test_proj::test_proj::ep()
 	//bg color
 	WindowBgColor({ 175,175,175,225 });
 	//bg color
+
 	while (running) {
 
 		SetFrameStart();
@@ -85,8 +86,10 @@ void test_proj::test_proj::ep()
 
 
 		//update
-		img2.UpdateBoundingBoxDefault();
-		img1.UpdateBoundingBoxDefault();
+		Update(img1);
+		Update(img2);
+		Update(txt);
+
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 
 		if (img1.detectCollision(img2)) {
@@ -104,6 +107,8 @@ void test_proj::test_proj::ep()
 		DrawBounds(img1);
 		Draw(img2);
 		Draw(txt);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderDrawLine(renderer, 300, 300, 300, 330);
 		//render stuff here
 
 		pres();

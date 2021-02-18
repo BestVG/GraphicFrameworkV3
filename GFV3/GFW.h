@@ -12,15 +12,20 @@ namespace GFW {
 	struct Vector2D { int x, y; };
 	struct FVector2D {
 		float x, y;
-		FVector2D() : x(0), y(0) {};
-		FVector2D(float x, float y) : x(x), y(y) {};
-		FVector2D(const Vector2D& vec) : x(static_cast<float>(vec.x)), y(static_cast<float>(vec.y)) {};
+		FVector2D() : x(0), y(0) {}
+		FVector2D(float x, float y) : x(x), y(y) {}
+		FVector2D(const Vector2D& vec) : x(static_cast<float>(vec.x)), y(static_cast<float>(vec.y)) {}
 		FVector2D& operator=(const Vector2D& vec);
 	};
 
 	class Drawable {
 	public:
 		virtual void Draw(SDL_Renderer* renderer) = 0;
+	};
+
+	class Updatable {
+	public:
+		virtual void Update(SDL_Renderer* renderer) = 0;
 	};
 
 	namespace Points {
@@ -55,22 +60,23 @@ namespace GFW {
 	}
 
 	namespace Image {
-		struct Image : Points::Polygon, Drawable {
+		struct Image : Points::Polygon, Drawable, Updatable {
 			SDL_Rect rect;
 			SDL_Texture* texture;
 			Points::Points BoundingBox;
 			double angle = 0.0;
 
-			void UpdateBoundingBoxDefault() { BoundingBox = Collision::GetRectBounds(rect); };
-			void SetPos(Vector2D pos) { rect.x = pos.x; rect.y = pos.y; };
+			void UpdateBoundingBoxDefault() { BoundingBox = Collision::GetRectBounds(rect); }
+			void SetPos(Vector2D pos) { rect.x = pos.x; rect.y = pos.y; }
 			void DrawImage(SDL_Renderer* renderer);
-			void SetSize(pair<int, int> s) { rect.w = s.first; rect.h = s.second; };
-			int GetX() { return rect.x; };
-			int GetY() { return rect.y; };
-			int GetW() { return rect.w; };
-			int GetH() { return rect.h; };
-			Points::Points GetBounds() { return BoundingBox; };
+			void SetSize(pair<int, int> s) { rect.w = s.first; rect.h = s.second; }
+			int GetX() { return rect.x; }
+			int GetY() { return rect.y; }
+			int GetW() { return rect.w; }
+			int GetH() { return rect.h; }
+			Points::Points GetBounds() { return BoundingBox; }
 			void Draw(SDL_Renderer* renderer) { DrawImage(renderer); }
+			void Update(SDL_Renderer* renderer) { UpdateBoundingBoxDefault(); }
 		};
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
 	};
@@ -79,11 +85,11 @@ namespace GFW {
 
 		class FontManager {
 		public:
-			FontManager() { DefaultPath = "./Fonts/"; };
+			FontManager() { DefaultPath = "./Fonts/"; }
 			
 			void LoadFont(string fontPath, int fsize, string fontName = "", int style = TTF_STYLE_NORMAL);
-			void SetDefaultPath(string path) { DefaultPath = path; };
-			TTF_Font* GetFont(string fontName) { return regF[fontName]; };
+			void SetDefaultPath(string path) { DefaultPath = path; }
+			TTF_Font* GetFont(string fontName) { return regF[fontName]; }
 			TTF_Font* operator[](string fontName) { return GetFont(fontName);  }
 
 		private:
@@ -91,15 +97,19 @@ namespace GFW {
 			string DefaultPath;
 		};
 
-		struct Text : Points::Polygon, Drawable {
+		struct Text : Points::Polygon, Drawable, Updatable {
 			string msg;
 			Vector2D pos;
 			TTF_Font* font;
 			SDL_Color color = { 0, 0, 0, 255 };
+			SDL_Rect rect;
+			SDL_Texture* texture = nullptr;
+			void UpdateTexture(SDL_Renderer* renderer);
 			void DrawString(SDL_Renderer* renderer);
 			pair<int, int> GetTextSize();
 			Points::Points GetBounds();
 			void Draw(SDL_Renderer* renderer) { DrawString(renderer); }
+			void Update(SDL_Renderer* renderer) { UpdateTexture(renderer); }
 		};
 
 	}
@@ -137,6 +147,7 @@ namespace GFW {
 		void DrawBounds(Points::Polygon& poly) { DrawBounds(poly.GetBounds()); };
 		void DrawBounds(Points::Polygon& poly, SDL_Color color);
 		void Draw(Drawable& drawable) { drawable.Draw(renderer); };
+		void Update(Updatable& updatable) { updatable.Update(renderer); };
 
 		void WindowBgColor(SDL_Color c) { backgroundColor = c; };
 
