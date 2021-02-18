@@ -42,7 +42,7 @@ void test_proj::test_proj::OnQuit()
 
 void test_proj::test_proj::init()
 {
-	WRinit("RYANS GAY", 1000, 700);
+	WRinit("Noobers", 1000, 700);
 
 	bind_input(SDL_QUIT, bind(&test_proj::OnQuit, this));
 
@@ -71,7 +71,6 @@ void test_proj::test_proj::init()
 void test_proj::test_proj::ep()
 {
 	init();
-	SDL_Color color;
 
 	//bg color
 	WindowBgColor({ 175,175,175,225 });
@@ -91,20 +90,20 @@ void test_proj::test_proj::ep()
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 
 		if (img1.detectCollision(img2)) {
-			color = {255, 0, 0, 255};
+			img1.BoundingBox.color = {255, 0, 0, 255};
 		}
 		else {
-			color = {0, 255, 0, 255};
+			img1.BoundingBox.color = {0, 255, 0, 255};
 		}
 		//update
 
 		prep();
 
 		//render stuff here
-		DrawImage(img1);
-		DrawBounds(img1, color);
-		DrawImage(img2);
-		DrawString(txt);
+		Draw(img1);
+		DrawBounds(img1);
+		Draw(img2);
+		Draw(txt);
 		//render stuff here
 
 		pres();
