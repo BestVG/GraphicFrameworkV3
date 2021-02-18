@@ -300,6 +300,11 @@ pair<int, int> GFW::Text::Text::GetTextSize()
 	return {w, h};
 }
 
+GFW::Points::Points GFW::Text::Text::GetBounds() {
+	pair<int, int> size = GetTextSize();
+	return Collision::GetRectBounds({ pos.x, pos.y, size.first, size.second });
+};
+
 bool GFW::Points::Polygon::detectCollision(Points points) {
 	return Collision::detectCollision(GetBounds(), points);
 }
@@ -307,3 +312,9 @@ bool GFW::Points::Polygon::detectCollision(Points points) {
 bool GFW::Points::Polygon::detectCollision(Polygon& poly) {
 	return Collision::detectCollision(GetBounds(), poly.GetBounds());
 }
+
+GFW::FVector2D& GFW::FVector2D::operator=(const Vector2D& vec) {
+	x = static_cast<float>(vec.x);
+	y = static_cast<float>(vec.y);
+	return *this;
+};

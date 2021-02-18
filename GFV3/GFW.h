@@ -11,8 +11,8 @@ namespace GFW {
 		float x, y;
 		FVector2D() : x(0), y(0) {};
 		FVector2D(float x, float y) : x(x), y(y) {};
-		FVector2D(const Vector2D& vec) { x = static_cast<float>(vec.x); y = static_cast<float>(vec.y);};
-		FVector2D& operator=(const Vector2D& vec) { x = static_cast<float>(vec.x); y = static_cast<float>(vec.y); return *this; };
+		FVector2D(const Vector2D& vec) : x(static_cast<float>(vec.x)), y(static_cast<float>(vec.y)) {};
+		FVector2D& operator=(const Vector2D& vec);
 	};
 
 	namespace Points {
@@ -87,7 +87,7 @@ namespace GFW {
 			SDL_Color color = { 0, 0, 0, 255 };
 			void DrawString(SDL_Renderer* renderer);
 			pair<int, int> GetTextSize();
-			Points::Points GetBounds() { pair<int, int> size = GetTextSize(); return Collision::GetRectBounds({ pos.x, pos.y, size.first, size.second }); };
+			Points::Points GetBounds();
 		};
 
 	}
