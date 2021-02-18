@@ -61,7 +61,7 @@ void test_proj::test_proj::init()
 
 	fontManager.LoadFont("HighlandGothicFLF.ttf", 20, "noober");
 
-	txt.font = fontManager.GetFont("noober");
+	txt.font = fontManager["noober"];
 	txt.msg = "Noobers";
 	txt.pos.x = 500 - txt.GetTextSize().first / 2;
 	txt.pos.y = 30;
@@ -72,6 +72,10 @@ void test_proj::test_proj::ep()
 {
 	init();
 	SDL_Color color;
+
+	//bg color
+	WindowBgColor({ 175,175,175,225 });
+	//bg color
 	while (running) {
 
 		SetFrameStart();
@@ -86,7 +90,7 @@ void test_proj::test_proj::ep()
 		img1.UpdateBoundingBoxDefault();
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 
-		if (Collision::detectCollision(img1.BoundingBox, img2.BoundingBox)) {
+		if (img1.detectCollision(img2)) {
 			color = {255, 0, 0, 255};
 		}
 		else {
@@ -94,17 +98,13 @@ void test_proj::test_proj::ep()
 		}
 		//update
 
-		//bg color
-		WindowBgColor({225,225,225,225});
-		//bg color
-
 		prep();
 
 		//render stuff here
-		img1.DrawImage(renderer);
-		Collision::DrawCollisionBounds(img1.BoundingBox, color, renderer);
-		img2.DrawImage(renderer);
-		txt.DrawString(renderer);
+		DrawImage(img1);
+		DrawBounds(img1, color);
+		DrawImage(img2);
+		DrawString(txt);
 		//render stuff here
 
 		pres();

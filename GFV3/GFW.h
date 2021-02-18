@@ -9,13 +9,24 @@ namespace GFW {
 	struct Vector2D { int x, y; };
 	struct FVector2D {
 		float x, y;
-		void convertVector2D(Vector2D vec) { x = static_cast<float>(vec.x); y = static_cast<float>(vec.y); };
+		FVector2D() : x(0), y(0) {};
+		FVector2D(float x, float y) : x(x), y(y) {};
+		FVector2D(const Vector2D& vec) : x(static_cast<float>(vec.x)), y(static_cast<float>(vec.y)) {};
+		FVector2D& operator=(const Vector2D& vec);
 	};
 
 	namespace Points {
 		struct Points {
 			vector<Vector2D> v;
 			Vector2D midp;
+			void DrawBounds(SDL_Renderer* renderer, SDL_Color color);
+		};
+
+		class Polygon {
+		public:
+			virtual Points GetBounds() = 0;
+			bool detectCollision(Points points);
+			bool detectCollision(Polygon& poly);
 		};
 
 		Vector2D RotatePoint(Vector2D origin, Vector2D orginal_point, double angle);
@@ -27,7 +38,6 @@ namespace GFW {
 		bool detectCollision(Points::Points a, Points::Points b);
 		bool checkshape_Dalg(Points::Points a, Points::Points b);
 		bool checkshape_SATalg(Points::Points p1, Points::Points p2);
-		void DrawCollisionBounds(Points::Points bounds, SDL_Color color, SDL_Renderer* renderer);
 		Points::Points GetRectBounds(SDL_Rect rect);
 		namespace Ray {
 			typedef pair<Vector2D, Vector2D> Ray;
@@ -35,7 +45,7 @@ namespace GFW {
 	}
 
 	namespace Image {
-		struct Image {
+		struct Image : Points::Polygon {
 			SDL_Rect rect;
 			SDL_Texture* texture;
 			Points::Points BoundingBox;
@@ -49,6 +59,7 @@ namespace GFW {
 			int GetY() { return rect.y; };
 			int GetW() { return rect.w; };
 			int GetH() { return rect.h; };
+			Points::Points GetBounds() { return BoundingBox; };
 		};
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
 	};
@@ -59,22 +70,24 @@ namespace GFW {
 		public:
 			FontManager() { DefaultPath = "./Fonts/"; };
 			
-			void LoadFont(string fn, int fsize, string ckey = "", int style = TTF_STYLE_NORMAL);
+			void LoadFont(string fontPath, int fsize, string fontName = "", int style = TTF_STYLE_NORMAL);
 			void SetDefaultPath(string path) { DefaultPath = path; };
-			TTF_Font* GetFont(string key) { return regF[key]; };
+			TTF_Font* GetFont(string fontName) { return regF[fontName]; };
+			TTF_Font* operator[](string fontName) { return GetFont(fontName);  }
 
 		private:
 			map<string, TTF_Font*> regF;
 			string DefaultPath;
 		};
 
-		struct Text {
+		struct Text : Points::Polygon {
 			string msg;
 			Vector2D pos;
 			TTF_Font* font;
 			SDL_Color color = { 0, 0, 0, 255 };
 			void DrawString(SDL_Renderer* renderer);
-			pair <int, int> GetTextSize();
+			pair<int, int> GetTextSize();
+			Points::Points GetBounds();
 		};
 
 	}
@@ -109,9 +122,12 @@ namespace GFW {
 		void pres();
 
 
-		
+		void DrawBounds(Points::Points bounds, SDL_Color color) { bounds.DrawBounds(renderer, color); };
+		void DrawBounds(Points::Polygon& poly, SDL_Color color) { DrawBounds(poly.GetBounds(), color); };
+		void DrawImage(Image::Image image) { image.DrawImage(renderer); };
+		void DrawString(Text::Text text) { text.DrawString(renderer); };
 
-		void WindowBgColor(SDL_Color color) { SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a); };
+		void WindowBgColor(SDL_Color c) { backgroundColor = c; };
 
 		//rendering stuff
 
@@ -137,6 +153,7 @@ namespace GFW {
 		int FrameDelay;
 		Uint32 FrameStart;
 		int FrameTime;
+		SDL_Color backgroundColor;
 		static Text::FontManager fontManager;
 	};
 	

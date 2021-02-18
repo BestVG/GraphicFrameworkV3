@@ -11,7 +11,7 @@ GFW::Inst::Inst()
 	cout << "Done with SDL Init" << endl;
 
 	FPS = 60;
-	FrameDelay = 100 / FPS;
+	FrameDelay = 1000 / FPS;
 
 	if (TTF_Init() == -1) {
 		exit(1);
@@ -86,6 +86,7 @@ void GFW::Inst::pInput(SDL_Event e)
 
 void GFW::Inst::prep()
 {
+	SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 	SDL_RenderClear(renderer);
 }
 
@@ -155,15 +156,15 @@ bool GFW::Collision::checkshape_Dalg(Points::Points p1, Points::Points p2)
 	for (int p = 0; p < p1.v.size(); p++) {
 		FVector2D line_r1s;
 		FVector2D line_r1e;
-		line_r1s.convertVector2D(p1.midp);
-		line_r1e.convertVector2D(p1.v[p]);
+		line_r1s = p1.midp;
+		line_r1e = p1.v[p];
 
 		for (int q = 0; q < p2.v.size(); q++) {
 			FVector2D line_r2s;
 			FVector2D line_r2e;
 
-			line_r2s.convertVector2D(p2.v[q]);
-			line_r2e.convertVector2D(p2.v[(q + 1) % p2.v.size()]);
+			line_r2s = p2.v[q];
+			line_r2e = p2.v[(q + 1) % p2.v.size()];
 
 
 			float h = (line_r2e.x - line_r2s.x) * (line_r1s.y - line_r1e.y) - (line_r1s.x - line_r1e.x) * (line_r2e.y - line_r2s.y);
@@ -217,13 +218,13 @@ bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
 	return true;
 }
 
-void GFW::Collision::DrawCollisionBounds(Points::Points bounds, SDL_Color color, SDL_Renderer* renderer)
+void GFW::Points::Points::DrawBounds(SDL_Renderer* renderer, SDL_Color color)
 {
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-	for (int i = 0; i < bounds.v.size() - 1; i++) {
-		SDL_RenderDrawLine(renderer, bounds.v[i].x, bounds.v[i].y, bounds.v[i + 1].x, bounds.v[i + 1].y);
+	for (int i = 0; i < v.size() - 1; i++) {
+		SDL_RenderDrawLine(renderer, v[i].x, v[i].y, v[i + 1].x, v[i + 1].y);
 	}
-	SDL_RenderDrawLine(renderer, bounds.v[bounds.v.size() - 1].x, bounds.v[bounds.v.size() - 1].y, bounds.v[0].x, bounds.v[0].y);
+	SDL_RenderDrawLine(renderer, v[v.size() - 1].x, v[v.size() - 1].y, v[0].x, v[0].y);
 }
  
 GFW::Vector2D GFW::Points::RotatePoint(Vector2D origin, Vector2D orginal_point, double angle)
@@ -254,19 +255,19 @@ void GFW::Image::Image::DrawImage(SDL_Renderer* renderer)
 	SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }
 
-void GFW::Text::FontManager::LoadFont(string fn, int fsize, string ckey, int style)
+void GFW::Text::FontManager::LoadFont(string fontPath, int fsize, string fontName, int style)
 {
-	if (ckey == "") {
-		ckey = fn.substr(0, fn.find_last_of('.'));
+	if (fontPath == "") {
+		fontName = fontPath.substr(0, fontPath.find_last_of('.'));
 	}
 
-	string path = DefaultPath + fn;
+	string path = DefaultPath + fontPath;
 
 	TTF_Font* font = TTF_OpenFont(path.c_str(), fsize);
 
 	TTF_SetFontStyle(font, style);
 
-	regF[ckey] = font;
+	regF[fontName] = font;
 }
 
 void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
@@ -298,3 +299,22 @@ pair<int, int> GFW::Text::Text::GetTextSize()
 	TTF_SizeText(font, msg.c_str(), &w, &h);
 	return {w, h};
 }
+
+GFW::Points::Points GFW::Text::Text::GetBounds() {
+	pair<int, int> size = GetTextSize();
+	return Collision::GetRectBounds({ pos.x, pos.y, size.first, size.second });
+};
+
+bool GFW::Points::Polygon::detectCollision(Points points) {
+	return Collision::detectCollision(GetBounds(), points);
+}
+
+bool GFW::Points::Polygon::detectCollision(Polygon& poly) {
+	return Collision::detectCollision(GetBounds(), poly.GetBounds());
+}
+
+GFW::FVector2D& GFW::FVector2D::operator=(const Vector2D& vec) {
+	x = static_cast<float>(vec.x);
+	y = static_cast<float>(vec.y);
+	return *this;
+};
