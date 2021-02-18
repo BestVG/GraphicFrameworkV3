@@ -1,5 +1,7 @@
 #include "GFW.h"
 
+GFW::Text::FontManager GFW::Inst::fontManager = GFW::Text::FontManager();
+
 GFW::Inst::Inst()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {

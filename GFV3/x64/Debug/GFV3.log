@@ -1,7 +1,7 @@
 ﻿  GFV3.cpp
   GFW.cpp
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(232,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\richa\source\BigCodeProj\GFV3\GFV3\GFW.cpp(233,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ryand\source\repos\GraphicFrameworkV3\GFV3\GFW.cpp(234,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\ryand\source\repos\GraphicFrameworkV3\GFV3\GFW.cpp(235,20): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
   test.cpp
   Generating Code...
-  GFV3.vcxproj -> C:\Users\richa\source\BigCodeProj\GFV3\x64\Debug\GFV3.exe
+  GFV3.vcxproj -> C:\Users\ryand\source\repos\GraphicFrameworkV3\x64\Debug\GFV3.exe

@@ -137,7 +137,7 @@ namespace GFW {
 		int FrameDelay;
 		Uint32 FrameStart;
 		int FrameTime;
-		Text::FontManager fm;
+		static Text::FontManager fontManager;
 	};
 	
 	
