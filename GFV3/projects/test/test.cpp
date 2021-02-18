@@ -58,6 +58,13 @@ void test_proj::test_proj::init()
 	img2 = Image::CreateImg(img_path, renderer);
 	img2.SetPos({ 400, 400 });
 	img2.SetSize({img2.GetW()/2, img2.GetH()/2});
+
+	fm.LoadFont("HighlandGothicFLF.ttf", 20, "noober");
+
+	txt.font = fm.GetFont("noober");
+	txt.msg = "Noobers";
+	txt.pos.x = 500 - txt.GetTextSize().first / 2;
+	txt.pos.y = 30;
 }
 
 
@@ -97,6 +104,7 @@ void test_proj::test_proj::ep()
 		img1.DrawImage(renderer);
 		Collision::DrawCollisionBounds(img1.BoundingBox, color, renderer);
 		img2.DrawImage(renderer);
+		txt.DrawString(renderer);
 		//render stuff here
 
 		pres();

@@ -18,6 +18,7 @@ namespace test_proj {
 
 	private:
 		Image::Image img1, img2;
+		Text::Text txt;
 	};
 
 

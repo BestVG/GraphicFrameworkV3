@@ -53,6 +53,32 @@ namespace GFW {
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
 	};
 
+	namespace Text {
+
+		class FontManager {
+		public:
+			FontManager() { DefaultPath = "./Fonts/"; };
+			
+			void LoadFont(string fn, int fsize, string ckey = "", int style = TTF_STYLE_NORMAL);
+			void SetDefaultPath(string path) { DefaultPath = path; };
+			TTF_Font* GetFont(string key) { return regF[key]; };
+
+		private:
+			map<string, TTF_Font*> regF;
+			string DefaultPath;
+		};
+
+		struct Text {
+			string msg;
+			Vector2D pos;
+			TTF_Font* font;
+			SDL_Color color = { 0, 0, 0, 255 };
+			void DrawString(SDL_Renderer* renderer);
+			pair <int, int> GetTextSize();
+		};
+
+	}
+
 
 	class Inst {
 	public:
@@ -111,6 +137,7 @@ namespace GFW {
 		int FrameDelay;
 		Uint32 FrameStart;
 		int FrameTime;
+		Text::FontManager fm;
 	};
 	
 	

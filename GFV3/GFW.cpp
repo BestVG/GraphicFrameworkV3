@@ -251,3 +251,48 @@ void GFW::Image::Image::DrawImage(SDL_Renderer* renderer)
 {
 	SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }
+
+void GFW::Text::FontManager::LoadFont(string fn, int fsize, string ckey, int style)
+{
+	if (ckey == "") {
+		ckey = fn.substr(0, fn.find_last_of('.'));
+	}
+
+	string path = DefaultPath + fn;
+
+	TTF_Font* font = TTF_OpenFont(path.c_str(), fsize);
+
+	TTF_SetFontStyle(font, style);
+
+	regF[ckey] = font;
+}
+
+void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
+{
+	SDL_Surface* surface;
+	SDL_Texture* texture;
+
+	surface = TTF_RenderText_Blended(font, msg.c_str(), color);
+
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+	SDL_FreeSurface(surface);
+
+	SDL_Rect rect;
+
+	rect.x = pos.x;
+	rect.y = pos.y;
+
+	SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+
+	SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+	SDL_DestroyTexture(texture);
+}
+
+pair<int, int> GFW::Text::Text::GetTextSize()
+{
+	int w, h;
+	TTF_SizeText(font, msg.c_str(), &w, &h);
+	return {w, h};
+}
