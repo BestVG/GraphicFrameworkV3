@@ -3,6 +3,9 @@
 
 namespace GFW {
 
+	SDL_Color GFW_GetRenderDrawColor(SDL_Renderer* renderer);
+	void GFW_SetRenderDrawColor(SDL_Renderer* renderer, SDL_Color color);
+
 	class Inst;
 
 
@@ -15,11 +18,18 @@ namespace GFW {
 		FVector2D& operator=(const Vector2D& vec);
 	};
 
+	class Drawable {
+	public:
+		virtual void Draw(SDL_Renderer* renderer) = 0;
+	};
+
 	namespace Points {
-		struct Points {
+		struct Points : Drawable {
 			vector<Vector2D> v;
 			Vector2D midp;
-			void DrawBounds(SDL_Renderer* renderer, SDL_Color color);
+			SDL_Color color;
+			void DrawBounds(SDL_Renderer* renderer);
+			void Draw(SDL_Renderer* renderer) { DrawBounds(renderer); }
 		};
 
 		class Polygon {
@@ -45,7 +55,7 @@ namespace GFW {
 	}
 
 	namespace Image {
-		struct Image : Points::Polygon {
+		struct Image : Points::Polygon, Drawable {
 			SDL_Rect rect;
 			SDL_Texture* texture;
 			Points::Points BoundingBox;
@@ -60,6 +70,7 @@ namespace GFW {
 			int GetW() { return rect.w; };
 			int GetH() { return rect.h; };
 			Points::Points GetBounds() { return BoundingBox; };
+			void Draw(SDL_Renderer* renderer) { DrawImage(renderer); }
 		};
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
 	};
@@ -80,7 +91,7 @@ namespace GFW {
 			string DefaultPath;
 		};
 
-		struct Text : Points::Polygon {
+		struct Text : Points::Polygon, Drawable {
 			string msg;
 			Vector2D pos;
 			TTF_Font* font;
@@ -88,6 +99,7 @@ namespace GFW {
 			void DrawString(SDL_Renderer* renderer);
 			pair<int, int> GetTextSize();
 			Points::Points GetBounds();
+			void Draw(SDL_Renderer* renderer) { DrawString(renderer); }
 		};
 
 	}
@@ -121,11 +133,10 @@ namespace GFW {
 
 		void pres();
 
-
-		void DrawBounds(Points::Points bounds, SDL_Color color) { bounds.DrawBounds(renderer, color); };
-		void DrawBounds(Points::Polygon& poly, SDL_Color color) { DrawBounds(poly.GetBounds(), color); };
-		void DrawImage(Image::Image image) { image.DrawImage(renderer); };
-		void DrawString(Text::Text text) { text.DrawString(renderer); };
+		void DrawBounds(Points::Points bounds) { bounds.DrawBounds(renderer); };
+		void DrawBounds(Points::Polygon& poly) { DrawBounds(poly.GetBounds()); };
+		void DrawBounds(Points::Polygon& poly, SDL_Color color);
+		void Draw(Drawable& drawable) { drawable.Draw(renderer); };
 
 		void WindowBgColor(SDL_Color c) { backgroundColor = c; };
 

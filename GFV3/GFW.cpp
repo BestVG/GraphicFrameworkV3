@@ -2,6 +2,16 @@
 
 GFW::Text::FontManager GFW::Inst::fontManager = GFW::Text::FontManager();
 
+SDL_Color GFW::GFW_GetRenderDrawColor(SDL_Renderer* renderer) {
+	Uint8 r, g, b, a;
+	SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
+	return { r, g, b, a };
+}
+
+void GFW::GFW_SetRenderDrawColor(SDL_Renderer* renderer, SDL_Color color) {
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+}
+
 GFW::Inst::Inst()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -86,7 +96,7 @@ void GFW::Inst::pInput(SDL_Event e)
 
 void GFW::Inst::prep()
 {
-	SDL_SetRenderDrawColor(renderer, backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+	GFW_SetRenderDrawColor(renderer, backgroundColor);
 	SDL_RenderClear(renderer);
 }
 
@@ -218,9 +228,9 @@ bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
 	return true;
 }
 
-void GFW::Points::Points::DrawBounds(SDL_Renderer* renderer, SDL_Color color)
+void GFW::Points::Points::DrawBounds(SDL_Renderer* renderer)
 {
-	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+	GFW_SetRenderDrawColor(renderer, color);
 	for (int i = 0; i < v.size() - 1; i++) {
 		SDL_RenderDrawLine(renderer, v[i].x, v[i].y, v[i + 1].x, v[i + 1].y);
 	}
@@ -318,3 +328,9 @@ GFW::FVector2D& GFW::FVector2D::operator=(const Vector2D& vec) {
 	y = static_cast<float>(vec.y);
 	return *this;
 };
+
+void GFW::Inst::DrawBounds(Points::Polygon& poly, SDL_Color color) {
+	Points::Points points = poly.GetBounds();
+	points.color = color;
+	DrawBounds(points);
+}
