@@ -2,11 +2,12 @@
 
 #include "../../GFW.h"
 
+using namespace GFW;
 
 //project namespace
 namespace test_proj {
 
-	class test_proj : public GFW::Inst {
+	class test_proj : public Inst {
 	public:
 		void MovePlayer();
 		void OnQuit();
@@ -16,7 +17,7 @@ namespace test_proj {
 		void cleanup();
 
 	private:
-		GFW::Image img1, img2;
+		Image::Image img1, img2;
 	};
 
 

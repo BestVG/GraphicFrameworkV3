@@ -10,6 +10,11 @@ GFW::Inst::Inst()
 
 	FPS = 60;
 	FrameDelay = 100 / FPS;
+
+	if (TTF_Init() == -1) {
+		exit(1);
+	}
+	cout << "Done with TTF Init" << endl;
 }
 
 void GFW::Inst::WRinit(string winT, int sw, int sh)
@@ -87,7 +92,7 @@ void GFW::Inst::pres()
 	SDL_RenderPresent(renderer);
 }
 
-GFW::Image GFW::Inst::CreateImg(string img_path)
+GFW::Image::Image GFW::Image::CreateImg(string img_path, SDL_Renderer* renderer)
 {
 	Image img;
 	SDL_Surface* temp = IMG_Load(img_path.c_str());
@@ -242,7 +247,7 @@ GFW::Points::Points GFW::Points::RotatePoints(Points p, double angle)
 	return newpoints;
 }
 
-void GFW::Image::DrawImage(SDL_Renderer* renderer)
+void GFW::Image::Image::DrawImage(SDL_Renderer* renderer)
 {
 	SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }

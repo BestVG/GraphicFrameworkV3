@@ -34,21 +34,23 @@ namespace GFW {
 		}
 	}
 
+	namespace Image {
+		struct Image {
+			SDL_Rect rect;
+			SDL_Texture* texture;
+			Points::Points BoundingBox;
+			double angle = 0.0;
 
-	struct Image {
-		SDL_Rect rect;
-		SDL_Texture* texture;
-		Points::Points BoundingBox;
-		double angle = 0.0;
-
-		void UpdateBoundingBoxDefault() { BoundingBox = Collision::GetRectBounds(rect); };
-		void SetPos(Vector2D pos) { rect.x = pos.x; rect.y = pos.y; };
-		void DrawImage(SDL_Renderer* renderer);
-		void SetSize(pair<int, int> s) { rect.w = s.first; rect.h = s.second; };
-		int GetX() { return rect.x; };
-		int GetY() { return rect.y; };
-		int GetW() { return rect.w; };
-		int GetH() { return rect.h; };
+			void UpdateBoundingBoxDefault() { BoundingBox = Collision::GetRectBounds(rect); };
+			void SetPos(Vector2D pos) { rect.x = pos.x; rect.y = pos.y; };
+			void DrawImage(SDL_Renderer* renderer);
+			void SetSize(pair<int, int> s) { rect.w = s.first; rect.h = s.second; };
+			int GetX() { return rect.x; };
+			int GetY() { return rect.y; };
+			int GetW() { return rect.w; };
+			int GetH() { return rect.h; };
+		};
+		Image CreateImg(string img_path, SDL_Renderer* renderer);
 	};
 
 
@@ -80,11 +82,11 @@ namespace GFW {
 
 		void pres();
 
-		Image CreateImg(string img_path);
 
 		
 
 		void WindowBgColor(SDL_Color color) { SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a); };
+
 		//rendering stuff
 
 
@@ -110,6 +112,7 @@ namespace GFW {
 		Uint32 FrameStart;
 		int FrameTime;
 	};
+	
 	
 
 }

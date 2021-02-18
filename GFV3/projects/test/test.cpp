@@ -51,11 +51,11 @@ void test_proj::test_proj::init()
 	string img_path = "./projects/test/images/DefaultProfilePicture.png";
 
 
-	img1 = CreateImg(img_path);
+	img1 = Image::CreateImg(img_path, renderer);
 	img1.SetPos({100, 100});
 	img1.SetSize({img1.GetW()/2, img1.GetH()/2});
 
-	img2 = CreateImg(img_path);
+	img2 = Image::CreateImg(img_path, renderer);
 	img2.SetPos({ 400, 400 });
 	img2.SetSize({img2.GetW()/2, img2.GetH()/2});
 }
@@ -69,14 +69,17 @@ void test_proj::test_proj::ep()
 
 		SetFrameStart();
 
+		//input
 		gInput();
+		//input
+
 
 		//update
 		img2.UpdateBoundingBoxDefault();
 		img1.UpdateBoundingBoxDefault();
-		img1.BoundingBox = GFW::Points::RotatePoints(img1.BoundingBox, img1.angle);
+		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 
-		if (GFW::Collision::detectCollision(img1.BoundingBox, img2.BoundingBox)) {
+		if (Collision::detectCollision(img1.BoundingBox, img2.BoundingBox)) {
 			color = {255, 0, 0, 255};
 		}
 		else {
@@ -87,11 +90,12 @@ void test_proj::test_proj::ep()
 		//bg color
 		WindowBgColor({225,225,225,225});
 		//bg color
+
 		prep();
 
 		//render stuff here
 		img1.DrawImage(renderer);
-		GFW::Collision::DrawCollisionBounds(img1.BoundingBox, color, renderer);
+		Collision::DrawCollisionBounds(img1.BoundingBox, color, renderer);
 		img2.DrawImage(renderer);
 		//render stuff here
 
