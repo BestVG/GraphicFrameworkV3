@@ -280,10 +280,13 @@ void GFW::Text::FontManager::LoadFont(string fontPath, int fsize, string fontNam
 	regF[fontName] = font;
 }
 
-void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
+void GFW::Text::Text::UpdateTexture(SDL_Renderer* renderer)
 {
+	if (texture != nullptr) {
+		SDL_DestroyTexture(texture);
+	}
+
 	SDL_Surface* surface;
-	SDL_Texture* texture;
 
 	surface = TTF_RenderText_Blended(font, msg.c_str(), color);
 
@@ -291,16 +294,17 @@ void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
 
 	SDL_FreeSurface(surface);
 
-	SDL_Rect rect;
-
 	rect.x = pos.x;
 	rect.y = pos.y;
 
 	SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+}
 
-	SDL_RenderCopy(renderer, texture, NULL, &rect);
-
-	SDL_DestroyTexture(texture);
+void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
+{
+	if (texture != nullptr) {
+		SDL_RenderCopy(renderer, texture, NULL, &rect);
+	}
 }
 
 pair<int, int> GFW::Text::Text::GetTextSize()
