@@ -59,9 +59,9 @@ void test_proj::test_proj::init()
 	img2.SetPos({ 400, 400 });
 	img2.SetSize({img2.GetW()/2, img2.GetH()/2});
 
-	fm.LoadFont("HighlandGothicFLF.ttf", 20, "noober");
+	fontManager.LoadFont("HighlandGothicFLF.ttf", 20, "noober");
 
-	txt.font = fm.GetFont("noober");
+	txt.font = fontManager.GetFont("noober");
 	txt.msg = "Noobers";
 	txt.pos.x = 500 - txt.GetTextSize().first / 2;
 	txt.pos.y = 30;
