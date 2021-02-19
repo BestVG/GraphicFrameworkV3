@@ -46,6 +46,7 @@ void GFW::Inst::WRinit(string winT, int sw, int sh)
 	}
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 }
 
 void GFW::Inst::gerror_print()
