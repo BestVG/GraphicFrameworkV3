@@ -65,6 +65,9 @@ void test_proj::test_proj::init()
 	txt.msg = "Noobers";
 	txt.pos.x = 500 - txt.GetTextSize().first / 2;
 	txt.pos.y = 30;
+
+	c1.pos = { 300, 300 };
+	c1.r = 50;
 }
 
 
@@ -89,6 +92,7 @@ void test_proj::test_proj::ep()
 		Update(img1);
 		Update(img2);
 		Update(txt);
+		Update(c1);
 
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 

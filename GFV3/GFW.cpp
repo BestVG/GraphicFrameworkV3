@@ -364,3 +364,19 @@ GFW::Points::SDL_Points& GFW::Points::SDL_Points::operator=(const vector<Vector2
 
 	return *this;
 }
+
+void GFW::Circle::Circle::Update(SDL_Renderer* renderer)
+{
+	double inc = (M_PI / 180);
+	double max = (M_PI * 2);
+
+	double angle = 0;
+
+	BoundingBox.midp = pos;
+	BoundingBox.v.clear();
+	while (angle < max) {
+		BoundingBox.v.push_back({int( round( r * cos(angle) ) + pos.x), int(round(r * sin(angle)) + pos.y) });
+		angle += inc;
+	}
+
+}

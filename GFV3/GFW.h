@@ -123,8 +123,13 @@ namespace GFW {
 
 
 	namespace Circle {
-		struct Circle {
-			
+		struct Circle : Points::Polygon, Drawable, Updatable {
+			Vector2D pos;
+			int r;
+			Points::Points BoundingBox;
+			Points::Points GetBounds() { return BoundingBox; };
+			void Draw(SDL_Renderer* renderer) { BoundingBox.DrawBounds(renderer); };
+			void Update(SDL_Renderer* renderer);
 		};
 	};
 
