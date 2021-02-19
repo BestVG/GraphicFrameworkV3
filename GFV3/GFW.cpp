@@ -367,7 +367,7 @@ GFW::Points::SDL_Points& GFW::Points::SDL_Points::operator=(const vector<Vector2
 
 void GFW::Circle::Circle::Update(SDL_Renderer* renderer)
 {
-	double inc = (M_PI / 180);
+	double inc = min(0.5 / r, M_PI / 2);
 	double max = (M_PI * 2);
 
 	double angle = 0;
