@@ -79,7 +79,7 @@ void test_proj::test_proj::ep()
 	WindowBgColor({ 175,175,175,225 });
 	//bg color
 
-	PrepUpdate({ &img1, &img2, &txt, &c1 });
+	PrepUpdate({ img1, img2, txt, c1 });
 
 	while (running) {
 

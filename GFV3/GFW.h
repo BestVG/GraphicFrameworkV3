@@ -6,6 +6,16 @@ namespace GFW {
 	SDL_Color GFW_GetRenderDrawColor(SDL_Renderer* renderer);
 	void GFW_SetRenderDrawColor(SDL_Renderer* renderer, SDL_Color color);
 
+	template<typename T>
+	class Pointer {
+	public:
+		Pointer(const T& t): p(const_cast<T*>(&t)) {}
+		Pointer& operator=(const T& t) { p = &t; }
+		operator T*() { return p; }
+	private:
+		T* p;
+	};
+
 	class Inst;
 
 
@@ -177,7 +187,7 @@ namespace GFW {
 		void Update(Updatable& updatable) { if(updatable.NeedsUpdate()) updatable.Update(renderer); };
 		void RequestUpdate(Updatable& updatable) { updatable.RequestUpdate(); }
 		void PrepUpdate(Updatable& updatable) { queuedUpdates.push_back(&updatable); };
-		void PrepUpdate(vector<Updatable*> updatables) { for(Updatable* updatable: updatables) queuedUpdates.push_back(updatable); };
+		void PrepUpdate(vector<Pointer<Updatable>> updatables) { for(Updatable* updatable: updatables) queuedUpdates.push_back(updatable); };
 		void UpdateAll() { for (Updatable* updatable : queuedUpdates) Update(*updatable); }
 
 		void WindowBgColor(SDL_Color c) { backgroundColor = c; };
