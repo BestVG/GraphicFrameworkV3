@@ -113,6 +113,7 @@ void test_proj::test_proj::ep()
 		DrawBounds(img1);
 		Draw(img2);
 		Draw(txt);
+		Draw(c1);
 		//render stuff here
 
 		pres();
