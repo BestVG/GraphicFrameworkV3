@@ -135,8 +135,10 @@ namespace GFW {
 			SDL_Color color = { 0, 0, 0, 255 };
 			Points::Points BoundingBox;
 			Points::Points GetBounds() { return BoundingBox; }
-			void Draw(SDL_Renderer* renderer);
-			void DoUpdate(SDL_Renderer* renderer);
+			void DrawCircle(SDL_Renderer* renderer);
+			void UpdatePoints();
+			void Draw(SDL_Renderer* renderer) { DrawCircle(renderer); };
+			void DoUpdate(SDL_Renderer* renderer) { UpdatePoints(); };
 		};
 	};
 

@@ -366,7 +366,7 @@ GFW::Points::SDL_Points& GFW::Points::SDL_Points::operator=(const vector<Vector2
 	return *this;
 }
 
-void GFW::Circle::Circle::Draw(SDL_Renderer* renderer) {
+void GFW::Circle::Circle::DrawCircle(SDL_Renderer* renderer) {
 	GFW_SetRenderDrawColor(renderer, color);
 	int r2 = pow(r, 2);
 	for (int y = -r; y <= r; y++) {
@@ -378,7 +378,7 @@ void GFW::Circle::Circle::Draw(SDL_Renderer* renderer) {
 	}
 }
 
-void GFW::Circle::Circle::DoUpdate(SDL_Renderer* renderer)
+void GFW::Circle::Circle::UpdatePoints()
 {
 	double inc = min(0.5 / r, M_PI / 2);
 	double max = (M_PI * 2);
