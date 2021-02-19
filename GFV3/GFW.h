@@ -126,9 +126,10 @@ namespace GFW {
 		struct Circle : Points::Polygon, Drawable, Updatable {
 			Vector2D pos;
 			int r;
+			SDL_Color color = { 0, 0, 0, 255 };
 			Points::Points BoundingBox;
-			Points::Points GetBounds() { return BoundingBox; };
-			void Draw(SDL_Renderer* renderer) { BoundingBox.DrawBounds(renderer); };
+			Points::Points GetBounds() { return BoundingBox; }
+			void Draw(SDL_Renderer* renderer) { BoundingBox.DrawBounds(renderer); }
 			void Update(SDL_Renderer* renderer);
 		};
 	};

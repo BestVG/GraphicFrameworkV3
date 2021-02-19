@@ -379,5 +379,5 @@ void GFW::Circle::Circle::Update(SDL_Renderer* renderer)
 		BoundingBox.v.push_back({int( round( r * cos(angle) ) + pos.x), int(round(r * sin(angle)) + pos.y) });
 		angle += inc;
 	}
-
+	BoundingBox.color = color;
 }
