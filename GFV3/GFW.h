@@ -29,6 +29,13 @@ namespace GFW {
 	};
 
 	namespace Points {
+
+		struct SDL_Points {
+			SDL_Points(const vector<Vector2D>& v);
+			vector<SDL_Point> points;
+			SDL_Points& operator=(const vector<Vector2D>& v);
+		};
+
 		struct Points : Drawable {
 			vector<Vector2D> v;
 			Vector2D midp;
@@ -114,6 +121,12 @@ namespace GFW {
 
 	}
 
+
+	namespace Circle {
+		struct Circle {
+			
+		};
+	};
 
 	class Inst {
 	public:

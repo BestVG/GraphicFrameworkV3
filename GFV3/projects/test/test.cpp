@@ -100,6 +100,8 @@ void test_proj::test_proj::ep()
 		}
 		//update
 
+	
+
 		prep();
 
 		//render stuff here
@@ -107,8 +109,6 @@ void test_proj::test_proj::ep()
 		DrawBounds(img1);
 		Draw(img2);
 		Draw(txt);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderDrawLine(renderer, 300, 300, 300, 330);
 		//render stuff here
 
 		pres();

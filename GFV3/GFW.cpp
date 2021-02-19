@@ -231,10 +231,15 @@ bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
 void GFW::Points::Points::DrawBounds(SDL_Renderer* renderer)
 {
 	GFW_SetRenderDrawColor(renderer, color);
-	for (int i = 0; i < v.size() - 1; i++) {
-		SDL_RenderDrawLine(renderer, v[i].x, v[i].y, v[i + 1].x, v[i + 1].y);
-	}
-	SDL_RenderDrawLine(renderer, v[v.size() - 1].x, v[v.size() - 1].y, v[0].x, v[0].y);
+
+	SDL_Points p = v;
+
+	SDL_RenderDrawLines(renderer, &p.points[0], p.points.size());
+
+	//for (int i = 0; i < v.size() - 1; i++) {
+		//SDL_RenderDrawLine(renderer, v[i].x, v[i].y, v[i + 1].x, v[i + 1].y);
+	//}
+	//SDL_RenderDrawLine(renderer, v[v.size() - 1].x, v[v.size() - 1].y, v[0].x, v[0].y);
 }
  
 GFW::Vector2D GFW::Points::RotatePoint(Vector2D origin, Vector2D orginal_point, double angle)
@@ -337,4 +342,25 @@ void GFW::Inst::DrawBounds(Points::Polygon& poly, SDL_Color color) {
 	Points::Points points = poly.GetBounds();
 	points.color = color;
 	DrawBounds(points);
+}
+
+
+GFW::Points::SDL_Points::SDL_Points(const vector<Vector2D>& v)
+{
+	for (Vector2D p : v) {
+		points.push_back({ p.x, p.y });
+	}
+	points.push_back(points[0]);
+}
+
+GFW::Points::SDL_Points& GFW::Points::SDL_Points::operator=(const vector<Vector2D>& v)
+{
+	points.clear();
+	for (Vector2D p : v) {
+		points.push_back({p.x, p.y});
+	}
+
+	points.push_back(points[0]);
+
+	return *this;
 }
