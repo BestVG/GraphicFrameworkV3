@@ -102,6 +102,7 @@ void test_proj::test_proj::ep()
 		else {
 			img1.BoundingBox.color = {0, 255, 0, 255};
 		}
+		c1.color = img1.BoundingBox.color;
 		//update
 
 	
@@ -114,6 +115,7 @@ void test_proj::test_proj::ep()
 		Draw(img2);
 		Draw(txt);
 		Draw(c1);
+		DrawBounds(c1, {0, 0, 0, 255});
 		//render stuff here
 
 		pres();
