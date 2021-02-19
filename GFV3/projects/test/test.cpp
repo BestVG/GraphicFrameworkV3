@@ -3,36 +3,30 @@
 
 void test_proj::test_proj::MovePlayer()
 {
-	switch (e.key.keysym.sym)
-	{
+	Vector2D pos_modifers = {0, 0};
+	int speed = 5;
 
-	case SDLK_w:
-		img1.rect.y -= 10;
-		break;
-
-	case SDLK_s:
-		img1.rect.y += 10;
-		break;
-
-	case SDLK_a:
-		img1.rect.x -= 10;
-		break;
-
-	case SDLK_d:
-		img1.rect.x += 10;
-		break;
-
-	case SDLK_q:
-		img1.angle -= 5;
-		break;
-
-	case SDLK_e:
-		img1.angle += 5;
-		break;
-
-	default:
-		break;
+	if (KeyPressed[SDL_SCANCODE_W]) {
+		pos_modifers.y = -(speed);
 	}
+	if (KeyPressed[SDL_SCANCODE_S]) {
+		pos_modifers.y = speed;
+	}
+	if (KeyPressed[SDL_SCANCODE_A]) {
+		pos_modifers.x = -(speed);
+	}
+	if (KeyPressed[SDL_SCANCODE_D]) {
+		pos_modifers.x = speed;
+	}
+	if (KeyPressed[SDL_SCANCODE_E]) {
+		img1.angle += 3;
+	}
+	if (KeyPressed[SDL_SCANCODE_Q]) {
+		img1.angle -= 3;
+	}
+
+	img1.rect.x += pos_modifers.x;
+	img1.rect.y += pos_modifers.y;
 }
 
 void test_proj::test_proj::OnQuit()
@@ -46,7 +40,9 @@ void test_proj::test_proj::init()
 
 	bind_input(SDL_QUIT, bind(&test_proj::OnQuit, this));
 
-	bind_input(SDL_KEYDOWN, bind(&test_proj::MovePlayer, this));
+	key_inputs = bind(&test_proj::MovePlayer, this);
+
+
 
 	string img_path = "./projects/test/images/DefaultProfilePicture.png";
 
@@ -89,13 +85,10 @@ void test_proj::test_proj::ep()
 		gInput();
 		//input
 
-
 		//update
 		RequestUpdate(img1);
 		UpdateAll();
-
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
-
 		if (img1.detectCollision(img2)) {
 			img1.BoundingBox.color = {255, 0, 0, 255};
 		}

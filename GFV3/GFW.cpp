@@ -59,6 +59,7 @@ void GFW::Inst::bind_input(SDL_EventType binding_event, function<void(void)> fun
 	inputs.push_back({ binding_event, func });
 }
 
+
 void GFW::Inst::unbind_input(SDL_EventType binding_event)
 {
 	int event_index = -1;
@@ -87,12 +88,14 @@ void GFW::Inst::gInput()
 
 void GFW::Inst::pInput(SDL_Event e)
 {
-	for (pair<int, function<void(void)>> input : inputs) {
-
+	for (pair<SDL_EventType, function<void(void)>> input : inputs) {
 		if (e.type == input.first) {
 			input.second();
 		}
 	}
+
+	KeyPressed = SDL_GetKeyboardState(NULL);
+	key_inputs();
 }
 
 void GFW::Inst::prep()

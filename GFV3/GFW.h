@@ -152,6 +152,8 @@ namespace GFW {
 		};
 	};
 
+
+
 	class Inst {
 	public:
 		Inst();
@@ -163,7 +165,7 @@ namespace GFW {
 		//do input stuff
 
 		//bind(&test_proj::ex1, this) param 2
-		void bind_input(SDL_EventType binding_event, function<void(void)> func);
+		void bind_input(SDL_EventType binding_event, function<void(void)> func); 
 
 
 		void unbind_input(SDL_EventType binding_event);
@@ -209,12 +211,13 @@ namespace GFW {
 		SDL_Window* window;
 		SDL_Renderer* renderer;
 		SDL_Event e;
-
 		vector<pair<SDL_EventType, function<void(void)>>> inputs;
+		function<void(void)> key_inputs;
 		bool running;
 		int FPS;
 		int FrameDelay;
 		Uint32 FrameStart;
+		const Uint8* KeyPressed;
 		int FrameTime;
 		SDL_Color backgroundColor;
 		vector<Updatable*> queuedUpdates;
