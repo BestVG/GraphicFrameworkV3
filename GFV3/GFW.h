@@ -25,7 +25,13 @@ namespace GFW {
 
 	class Updatable {
 	public:
-		virtual void Update(SDL_Renderer* renderer) = 0;
+		void Update(SDL_Renderer* renderer) { needsUpdate = false; DoUpdate(renderer); };
+		bool NeedsUpdate() { return needsUpdate; }
+		void RequestUpdate() { needsUpdate = true; }
+	protected:
+		virtual void DoUpdate(SDL_Renderer* renderer) = 0;
+	private:
+		bool needsUpdate = true;
 	};
 
 	namespace Points {
@@ -83,7 +89,7 @@ namespace GFW {
 			int GetH() { return rect.h; }
 			Points::Points GetBounds() { return BoundingBox; }
 			void Draw(SDL_Renderer* renderer) { DrawImage(renderer); }
-			void Update(SDL_Renderer* renderer) { UpdateBoundingBoxDefault(); }
+			void DoUpdate(SDL_Renderer* renderer) { UpdateBoundingBoxDefault(); }
 		};
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
 	};
@@ -116,7 +122,7 @@ namespace GFW {
 			pair<int, int> GetTextSize();
 			Points::Points GetBounds();
 			void Draw(SDL_Renderer* renderer) { DrawString(renderer); }
-			void Update(SDL_Renderer* renderer) { UpdateTexture(renderer); }
+			void DoUpdate(SDL_Renderer* renderer) { UpdateTexture(renderer); }
 		};
 
 	}
@@ -130,7 +136,7 @@ namespace GFW {
 			Points::Points BoundingBox;
 			Points::Points GetBounds() { return BoundingBox; }
 			void Draw(SDL_Renderer* renderer);
-			void Update(SDL_Renderer* renderer);
+			void DoUpdate(SDL_Renderer* renderer);
 		};
 	};
 
@@ -166,7 +172,11 @@ namespace GFW {
 		void DrawBounds(Points::Polygon& poly) { DrawBounds(poly.GetBounds()); };
 		void DrawBounds(Points::Polygon& poly, SDL_Color color);
 		void Draw(Drawable& drawable) { drawable.Draw(renderer); };
-		void Update(Updatable& updatable) { updatable.Update(renderer); };
+		void Update(Updatable& updatable) { if(updatable.NeedsUpdate()) updatable.Update(renderer); };
+		void RequestUpdate(Updatable& updatable) { updatable.RequestUpdate(); }
+		void PrepUpdate(Updatable& updatable) { queuedUpdates.push_back(&updatable); };
+		void PrepUpdate(vector<Updatable*> updatables) { for(Updatable* updatable: updatables) queuedUpdates.push_back(updatable); };
+		void UpdateAll() { for (Updatable* updatable : queuedUpdates) Update(*updatable); }
 
 		void WindowBgColor(SDL_Color c) { backgroundColor = c; };
 
@@ -195,6 +205,7 @@ namespace GFW {
 		Uint32 FrameStart;
 		int FrameTime;
 		SDL_Color backgroundColor;
+		vector<Updatable*> queuedUpdates;
 		static Text::FontManager fontManager;
 	};
 	

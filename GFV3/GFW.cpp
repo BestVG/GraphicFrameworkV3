@@ -378,7 +378,7 @@ void GFW::Circle::Circle::Draw(SDL_Renderer* renderer) {
 	}
 }
 
-void GFW::Circle::Circle::Update(SDL_Renderer* renderer)
+void GFW::Circle::Circle::DoUpdate(SDL_Renderer* renderer)
 {
 	double inc = min(0.5 / r, M_PI / 2);
 	double max = (M_PI * 2);

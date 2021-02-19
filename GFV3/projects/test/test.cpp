@@ -79,6 +79,8 @@ void test_proj::test_proj::ep()
 	WindowBgColor({ 175,175,175,225 });
 	//bg color
 
+	PrepUpdate({ &img1, &img2, &txt, &c1 });
+
 	while (running) {
 
 		SetFrameStart();
@@ -89,10 +91,8 @@ void test_proj::test_proj::ep()
 
 
 		//update
-		Update(img1);
-		Update(img2);
-		Update(txt);
-		Update(c1);
+		RequestUpdate(img1);
+		UpdateAll();
 
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 
