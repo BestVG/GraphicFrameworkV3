@@ -21,7 +21,6 @@ GFW::Inst::Inst()
 	cout << "Done with SDL Init" << endl;
 
 	FPS = 60;
-	FrameDelay = 1000 / FPS;
 
 	if (TTF_Init() == -1) {
 		exit(1);
@@ -51,7 +50,7 @@ void GFW::Inst::WRinit(string winT, int sw, int sh)
 
 void GFW::Inst::gerror_print()
 {
-	cout << "error: " << SDL_GetError() << endl;
+	cerr << "error: " << SDL_GetError() << endl;
 }
 
 void GFW::Inst::bind_input(SDL_EventType binding_event, function<void(void)> func)
@@ -131,6 +130,7 @@ GFW::Image::Image GFW::Image::CreateImg(string img_path, SDL_Renderer* renderer)
 
 void GFW::Inst::Delay()
 {
+	FrameDelay = 1000 / FPS;
 	FrameTime = SDL_GetTicks() - FrameStart;
 
 	if (FrameDelay > FrameTime) {
@@ -139,9 +139,9 @@ void GFW::Inst::Delay()
 }
 
 
-GFW::Points::Points GFW::Collision::GetRectBounds(SDL_Rect rect)
+GFW::Points::Points GFW::Points::GetRectBounds(SDL_Rect rect)
 {
-	Points::Points ret;
+	Points ret;
 
 	ret.v.push_back({rect.x, rect.y});
 	ret.v.push_back({rect.x + rect.w, rect.y});
@@ -232,6 +232,21 @@ bool GFW::Collision::checkshape_SATalg(Points::Points p1, Points::Points p2)
 	return true;
 }
 
+GFW::Points::Points::Points(const SDL_Rect& rect)
+{
+	Points p = GetRectBounds(rect);
+	v = p.v;
+	midp = p.midp;
+}
+
+GFW::Points::Points& GFW::Points::Points::operator=(const SDL_Rect& rect)
+{
+	Points p = GetRectBounds(rect);
+	v = p.v;
+	midp = p.midp;
+	return *this;
+}
+
 void GFW::Points::Points::DrawBounds(SDL_Renderer* renderer)
 {
 	GFW_SetRenderDrawColor(renderer, color);
@@ -312,7 +327,7 @@ void GFW::Text::Text::UpdateTexture(SDL_Renderer* renderer)
 void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
 {
 	if (texture != nullptr) {
-		SDL_RenderCopy(renderer, texture, NULL, &rect);
+		SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 	}
 }
 
@@ -325,7 +340,7 @@ pair<int, int> GFW::Text::Text::GetTextSize()
 
 GFW::Points::Points GFW::Text::Text::GetBounds() {
 	pair<int, int> size = GetTextSize();
-	return Collision::GetRectBounds({ pos.x, pos.y, size.first, size.second });
+	return { { pos.x, pos.y, size.first, size.second } };
 };
 
 bool GFW::Points::Polygon::detectCollision(Points points) {
