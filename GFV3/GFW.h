@@ -330,7 +330,7 @@ namespace GFW {
 		 *  \return an Image representing the image stored in the given file
 		 */
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
-	};
+	}
 
 
 	/**
@@ -486,7 +486,7 @@ namespace GFW {
 			void Draw(SDL_Renderer* renderer) { DrawCircle(renderer); };
 			void DoUpdate(SDL_Renderer* renderer) { UpdatePoints(); };
 		};
-	};
+	}
 
 
 	/**
