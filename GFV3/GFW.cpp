@@ -239,6 +239,15 @@ GFW::Points::Points::Points(const SDL_Rect& rect)
 	midp = p.midp;
 }
 
+GFW::Points::Points::Points(const Vector2D& vec)
+{
+	v.push_back({ vec.x, vec.y});
+	v.push_back({ vec.x + 1, vec.y });
+	v.push_back({ vec.x + 1, vec.y + 1 });
+	v.push_back({ vec.x, vec.y + 1});
+	midp = v[0];
+}
+
 GFW::Points::Points& GFW::Points::Points::operator=(const SDL_Rect& rect)
 {
 	Points p = GetRectBounds(rect);
@@ -247,18 +256,21 @@ GFW::Points::Points& GFW::Points::Points::operator=(const SDL_Rect& rect)
 	return *this;
 }
 
-void GFW::Points::Points::DrawBounds(SDL_Renderer* renderer)
+GFW::Points::Points& GFW::Points::Points::operator=(const Vector2D& vec)
+{
+	Points p = { vec };
+	v = p.v;
+	midp = p.midp;
+	return *this;
+}
+
+void GFW::Points::Points::Draw(SDL_Renderer* renderer)
 {
 	GFW_SetRenderDrawColor(renderer, color);
 
 	SDL_Points p = v;
 
 	SDL_RenderDrawLines(renderer, &p.points[0], p.points.size());
-
-	//for (int i = 0; i < v.size() - 1; i++) {
-		//SDL_RenderDrawLine(renderer, v[i].x, v[i].y, v[i + 1].x, v[i + 1].y);
-	//}
-	//SDL_RenderDrawLine(renderer, v[v.size() - 1].x, v[v.size() - 1].y, v[0].x, v[0].y);
 }
  
 GFW::Vector2D GFW::Points::RotatePoint(Vector2D origin, Vector2D orginal_point, double angle)
@@ -284,7 +296,7 @@ GFW::Points::Points GFW::Points::RotatePoints(Points p, double angle)
 	return newpoints;
 }
 
-void GFW::Image::Image::DrawImage(SDL_Renderer* renderer)
+void GFW::Image::Image::Draw(SDL_Renderer* renderer)
 {
 	SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 }
@@ -304,7 +316,7 @@ void GFW::Text::FontManager::LoadFont(string fontPath, int fsize, string fontNam
 	regF[fontName] = font;
 }
 
-void GFW::Text::Text::UpdateTexture(SDL_Renderer* renderer)
+void GFW::Text::Text::DoUpdate(SDL_Renderer* renderer)
 {
 	if (texture != nullptr) {
 		SDL_DestroyTexture(texture);
@@ -318,24 +330,15 @@ void GFW::Text::Text::UpdateTexture(SDL_Renderer* renderer)
 
 	SDL_FreeSurface(surface);
 
-	rect.x = pos.x;
-	rect.y = pos.y;
-
-	SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
+	SDL_QueryTexture(texture, NULL, NULL, &size.first, &size.second);
 }
 
-void GFW::Text::Text::DrawString(SDL_Renderer* renderer)
+void GFW::Text::Text::Draw(SDL_Renderer* renderer)
 {
 	if (texture != nullptr) {
+		SDL_Rect rect = { pos.x, pos.y, size.first, size.second };
 		SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, NULL, SDL_FLIP_NONE);
 	}
-}
-
-pair<int, int> GFW::Text::Text::GetTextSize()
-{
-	int w, h;
-	TTF_SizeText(font, msg.c_str(), &w, &h);
-	return {w, h};
 }
 
 GFW::Points::Points GFW::Text::Text::GetBounds() {
@@ -384,7 +387,7 @@ GFW::Points::SDL_Points& GFW::Points::SDL_Points::operator=(const vector<Vector2
 	return *this;
 }
 
-void GFW::Circle::Circle::DrawCircle(SDL_Renderer* renderer) {
+void GFW::Circle::Circle::Draw(SDL_Renderer* renderer) {
 	GFW_SetRenderDrawColor(renderer, color);
 	int r2 = pow(r, 2);
 	for (int y = -r; y <= r; y++) {
@@ -396,7 +399,7 @@ void GFW::Circle::Circle::DrawCircle(SDL_Renderer* renderer) {
 	}
 }
 
-void GFW::Circle::Circle::UpdatePoints()
+void GFW::Circle::Circle::DoUpdate(SDL_Renderer* renderer)
 {
 	double inc = min(0.5 / r, M_PI / 2);
 	double max = (M_PI * 2);
