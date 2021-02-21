@@ -59,6 +59,7 @@ void test_proj::test_proj::init()
 
 	txt.font = fontManager["noober"];
 	txt.msg = "Noobers";
+	Update(txt);
 	txt.pos.x = 500 - txt.GetTextSize().first / 2;
 	txt.pos.y = 30;
 

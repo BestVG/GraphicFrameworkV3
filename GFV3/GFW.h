@@ -143,7 +143,11 @@ namespace GFW {
 			Points(vector<Vector2D> v, Vector2D midp) : v(v), midp(midp) {}
 			Points(vector<Vector2D> v, Vector2D midp, SDL_Color color) : v(v), midp(midp), color(color) {}
 			Points(const SDL_Rect& rect);
+			Points(const SDL_Rect& rect, const SDL_Color& c) : Points(rect) { color = c; }
+			Points(const Vector2D& vec);
+			Points(const Vector2D& vec, const SDL_Color& c) : Points(vec) { color = c; }
 			Points& operator=(const SDL_Rect& rect);
+			Points& operator=(const Vector2D& vec);
 
 			/**
 			 *  \brief Draws these points onto the given renderer using the color stored in color
@@ -152,8 +156,7 @@ namespace GFW {
 			 * 
 			 *  \sa color
 			 */
-			void DrawBounds(SDL_Renderer* renderer);
-			void Draw(SDL_Renderer* renderer) { DrawBounds(renderer); }
+			void Draw(SDL_Renderer* renderer);
 		};
 
 		/**
@@ -258,11 +261,6 @@ namespace GFW {
 			double angle = 0.0;
 
 			/**
-			 *  \brief Updates the bounding box of this image to correspond to its rect member value
-			 */
-			void UpdateBoundingBoxDefault() { BoundingBox = rect; }
-
-			/**
 			 *  \brief Updates the rect member of this image to move its top-left corner to the given position
 			 * 
 			 *  \param pos the new position of the top-left corner
@@ -271,13 +269,6 @@ namespace GFW {
 			 *  \sa GetY()
 			 */
 			void SetPos(Vector2D pos) { rect.x = pos.x; rect.y = pos.y; }
-
-			/**
-			 *  \brief Draws this image at the position specified by rect and with the given angle onto the given renderer
-			 * 
-			 *  \param renderer the SDL_Renderer on which to draw this image
-			 */
-			void DrawImage(SDL_Renderer* renderer);
 
 			/**
 			 *  \brief Sets the width and height of this image
@@ -316,9 +307,20 @@ namespace GFW {
 			 *  \sa SetSize()
 			 */
 			int GetH() { return rect.h; }
+
 			Points::Points GetBounds() { return BoundingBox; }
-			void Draw(SDL_Renderer* renderer) { DrawImage(renderer); }
-			void DoUpdate(SDL_Renderer* renderer) { UpdateBoundingBoxDefault(); }
+
+			/**
+			 *  \brief Draws this image at the position specified by rect and with the given angle onto the given renderer
+			 *
+			 *  \param renderer the SDL_Renderer on which to draw this image
+			 */
+			void Draw(SDL_Renderer* renderer);
+
+			/**
+			 *  \brief Updates the bounding box of this image to correspond to its rect member value
+			 */
+			void DoUpdate(SDL_Renderer* renderer) { BoundingBox = rect; }
 		};
 
 		/**
@@ -330,7 +332,7 @@ namespace GFW {
 		 *  \return an Image representing the image stored in the given file
 		 */
 		Image CreateImg(string img_path, SDL_Renderer* renderer);
-	};
+	}
 
 
 	/**
@@ -414,9 +416,9 @@ namespace GFW {
 			 */
 			SDL_Color color = { 0, 0, 0, 255 };
 			/**
-			 *  \brief A SDL_Rect representing the rectangle enclosing this Text
+			 *  \brief A pair representing the width and height of this text object of the form {width, height}
 			 */
-			SDL_Rect rect;
+			pair<int, int> size;
 			/**
 			 *  \brief A SDL_Texture containing the rendered text
 			 */
@@ -425,25 +427,27 @@ namespace GFW {
 			 *  \brief The angle at which the text will be rendered
 			 */
 			double angle = 0;
-			/**
-			 *  \brief Re-renderes the text onto the texture member
-			 * 
-			 *  \param renderer a SDL_Renderer representing the current rendering context
-			 */
-			void UpdateTexture(SDL_Renderer* renderer);
-			/**
-			 *  \brief Renders this Text onto the given renderer
-			 * 
-			 *  \param renderer the SDL_Renderer on which to render this Text
-			 */
-			void DrawString(SDL_Renderer* renderer);
+
 			/**
 			 *  \return The width and hight of this Text as a std::pair of the form { width, height }
 			 */
-			pair<int, int> GetTextSize();
+			pair<int, int> GetTextSize() { return size; }
+
 			Points::Points GetBounds();
-			void Draw(SDL_Renderer* renderer) { DrawString(renderer); }
-			void DoUpdate(SDL_Renderer* renderer) { UpdateTexture(renderer); }
+
+			/**
+			 *  \brief Renders this Text onto the given renderer
+			 *
+			 *  \param renderer the SDL_Renderer on which to render this Text
+			 */
+			void Draw(SDL_Renderer* renderer);
+
+			/**
+			 *  \brief Re-renderes the text onto the texture member
+			 *
+			 *  \param renderer a SDL_Renderer representing the current rendering context
+			 */
+			void DoUpdate(SDL_Renderer* renderer);
 		};
 
 	}
@@ -472,21 +476,22 @@ namespace GFW {
 			 *  \brief A Points object containing a polygon which approximates the bounding box of the Circle
 			 */
 			Points::Points BoundingBox;
+
 			Points::Points GetBounds() { return BoundingBox; }
+
 			/**
 			 *  \brief Draws this circle onto the given renderer
-			 * 
+			 *
 			 *  \param renderer the SDL_Renderer on which to render this circle
 			 */
-			void DrawCircle(SDL_Renderer* renderer);
+			void Draw(SDL_Renderer* renderer);
+
 			/**
 			 *  \brief Updates the BoundingBox of this circle to reflect the current position and radius
 			 */
-			void UpdatePoints();
-			void Draw(SDL_Renderer* renderer) { DrawCircle(renderer); };
-			void DoUpdate(SDL_Renderer* renderer) { UpdatePoints(); };
+			void DoUpdate(SDL_Renderer* renderer);
 		};
-	};
+	}
 
 
 	/**
@@ -558,7 +563,7 @@ namespace GFW {
 		 * 
 		 *  \param bounds the Points to draw
 		 */
-		void DrawBounds(Points::Points bounds) { bounds.DrawBounds(renderer); };
+		void DrawBounds(Points::Points bounds) { bounds.Draw(renderer); };
 
 		/**
 		 *  \brief Draws the outline of the given Polygon
