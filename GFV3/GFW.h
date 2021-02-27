@@ -158,7 +158,7 @@ namespace GFW {
 			 */
 			void Draw(SDL_Renderer* renderer);
 		};
-
+		
 		/**
 		 *  \brief Represents a convex polygon which is defined by a ::Points::Points object
 		 */
@@ -704,7 +704,7 @@ namespace GFW {
 		/**
 		 *  \brief A function which processes key inputs
 		 */
-		function<void(void)> key_inputs;
+		function<void(void)> key_inputs = nullptr;
 		/**
 		 *  \brief Whether the program is running
 		 */

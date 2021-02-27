@@ -94,7 +94,10 @@ void GFW::Inst::pInput(SDL_Event e)
 	}
 
 	KeyPressed = SDL_GetKeyboardState(NULL);
-	key_inputs();
+
+	if (key_inputs != nullptr) {
+		key_inputs();
+	}
 }
 
 void GFW::Inst::prep()
