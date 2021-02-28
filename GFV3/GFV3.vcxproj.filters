@@ -19,6 +19,12 @@
     <Filter Include="projects\test">
       <UniqueIdentifier>{717fbffb-ce80-4406-8e73-a2274ff670eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="modules">
+      <UniqueIdentifier>{c67c784f-816e-4d73-a76a-86da01e7f76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="projects\BoundsEditor">
+      <UniqueIdentifier>{77336c21-e134-4741-a837-339fd9140b90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GFV3.cpp">
@@ -30,16 +36,22 @@
     <ClCompile Include="projects\test\test.cpp">
       <Filter>projects\test</Filter>
     </ClCompile>
+    <ClCompile Include="projects\BoundsEditor\BoundsEditor.cpp">
+      <Filter>projects\BoundsEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="projects\test\test.h">
+      <Filter>projects\test</Filter>
+    </ClInclude>
     <ClInclude Include="GFW.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="projects\test\test.h">
-      <Filter>projects\test</Filter>
+    <ClInclude Include="projects\BoundsEditor\BoundsEditor.h">
+      <Filter>projects\BoundsEditor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

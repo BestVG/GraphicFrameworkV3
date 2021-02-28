@@ -88,6 +88,7 @@ void test_proj::test_proj::ep()
 
 		//update
 		RequestUpdate(img1);
+		
 		UpdateAll();
 		img1.BoundingBox = Points::RotatePoints(img1.BoundingBox, img1.angle);
 		if (img1.detectCollision(img2)) {

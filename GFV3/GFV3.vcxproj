@@ -155,11 +155,13 @@
   <ItemGroup>
     <ClCompile Include="GFV3.cpp" />
     <ClCompile Include="GFW.cpp" />
+    <ClCompile Include="projects\BoundsEditor\BoundsEditor.cpp" />
     <ClCompile Include="projects\test\test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GFW.h" />
     <ClInclude Include="include.h" />
+    <ClInclude Include="projects\BoundsEditor\BoundsEditor.h" />
     <ClInclude Include="projects\test\test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

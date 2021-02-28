@@ -5,6 +5,7 @@
 
 //project includes
 #include "projects/test/test.h"
+#include "projects/BoundsEditor/BoundsEditor.h"
 
 
 void run(int argc, char* argv[]) {
@@ -13,6 +14,7 @@ void run(int argc, char* argv[]) {
 
 	//add proj here
 	projects["test"] = new test_proj::test_proj();
+	projects["bounds"] = new BoundsEditor::BoundsEditor();
 	//add proj here
 
 
